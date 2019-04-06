@@ -1,29 +1,45 @@
 package eunix56.example.com.yorcalc
 
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.app.Activity
+import android.content.Context
+import android.hardware.input.InputManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
 class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun afterTextChanged(p0: Editable?) {
         when(p0){
             first_input -> if (first_input.text.length == 4){
-                first_input.clearFocus();
-                operator.requestFocus();
+                operator.requestFocus()
+                operator.showSoftInputOnFocus = false
+                second_input.showSoftInputOnFocus = false
+
             }
             operator -> if (operator.text.length == 1){
-                operator.clearFocus()
-                second_input .requestFocus();}
+                second_input .requestFocus()
+                second_input.showSoftInputOnFocus = false
+                first_input.showSoftInputOnFocus = false
+
+            }
             second_input -> if (second_input.text.length == 4){
                 second_input.clearFocus()
+                operator.showSoftInputOnFocus = false
+                first_input.showSoftInputOnFocus = false
             }
         }
 
@@ -36,6 +52,7 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(p0: View?) {
 
         when(p0){
@@ -51,35 +68,48 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
             button_zero -> textWatch(first_input, second_input, "0")
             button_plus ->
                 if (operator.text.isEmpty()){
+                    operator.showSoftInputOnFocus = false
                     operator.setText("+")
                     operator.setSelection(operator.text.length)
-                    add = true
                 }
 //
 //                operator.setText("+")
 //            }
             button_minus ->  if (operator.text.isEmpty()){
+                operator.showSoftInputOnFocus = false
                 operator.setText("-")
                 operator.setSelection(operator.text.length)
-                sub = true
             }
 //                if (operator.text.isEmpty()){
 //                operator.setText("-")
 //            }
             button_multiply ->  if (operator.text.isEmpty()){
-                operator.setText("x")
+                operator.showSoftInputOnFocus = false
+                operator.setText("*")
                 operator.setSelection(operator.text.length)
-                mul = true
             }
 //                if (operator.text.isEmpty()){
 //                operator.setText("x")
 //            }
             button_divide ->  if (operator.text.isEmpty()){
+                operator.showSoftInputOnFocus = false
                 operator.setText("/")
                 operator.setSelection(operator.text.length)
-                div = true
             }
-            button_equal -> result.text = equal().toString()
+            button_equal ->
+                if (first_input.text.toString().isNotEmpty() && second_input.text.toString().isNotEmpty()){
+                    result.text = equal().toString()
+                    operator.showSoftInputOnFocus = false
+                    var finput = Translator.translate1to1000000(first_input.text.toString().toInt())
+                    yor_f_input.text = finput
+                    var op = Translator.translateoperator(operator.text.toString())
+                    yor_operator.text = op
+                    var sinput = Translator.translate1to1000000(second_input.text.toString().toInt())
+                    yor_s_input.text = sinput
+                    var res = Translator.translate1to1000000(Math.abs(Math.round(result.text.toString().toDouble())).toInt())
+                    yor_result.text = res
+                }
+
 //                if (operator.text.isEmpty()){
 //                operator.setText("/")
 //            }
@@ -122,6 +152,8 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
 
 
 
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_yoruba)
@@ -145,8 +177,13 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
         button_multiply = findViewById(R.id.button_mul)
         button_c = findViewById(R.id.button_clear)
         first_input = findViewById(R.id.first_input)
+        first_input.showSoftInputOnFocus = false
+        first_input.filters = Array<InputFilter>(1){InputMax(1,1000)}
         second_input = findViewById(R.id.second_input)
+        second_input.showSoftInputOnFocus = false
+        second_input.filters = Array<InputFilter>(1){InputMax(1,1000)}
         operator = findViewById(R.id.operator)
+        operator.showSoftInputOnFocus = false
         result = findViewById(R.id.result)
         yor_f_input = findViewById(R.id.yor_f_input)
         yor_s_input = findViewById(R.id.yor_s_input)
@@ -171,29 +208,30 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
         button_equal.setOnClickListener(this)
         button_c.setOnClickListener(this)
 
-        firstText = first_input.text
-        secondText = second_input.text
-        operate = operator.text
-
 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun textWatch(finput: EditText, linput: EditText, text: String){
         if (finput.isFocused && finput.text.isEmpty()){
+            finput.showSoftInputOnFocus = false
             finput.setText(text)
             finput.setSelection(finput.text.length)
         }
         else if (finput.isFocused && finput.text.length < 4){
+            finput.showSoftInputOnFocus = false
             finput.append(text)
             finput.setSelection(finput.text.length)
         }
         else if (linput.isFocused && linput.text.isEmpty()){
             finput.clearFocus()
+            linput.showSoftInputOnFocus = false
             linput.setText(text)
             linput.setSelection(linput.text.length)
         }
         else if (linput.isFocused && linput.text.length < 4){
+            linput.showSoftInputOnFocus = false
             linput.append(text)
             linput.setSelection(linput.text.length)
         }
@@ -224,25 +262,15 @@ class YorubaActivity : AppCompatActivity(), View.OnClickListener, TextWatcher{
             0.0
         }
     }
-    fun operate(operand: String, ans: TextView){
-        var answer = 0.0
-        if (firstText.isEmpty() || operate.isEmpty() || secondText.isEmpty())
-            return
-        else {
-            when (operand){
-                "+" -> answer = firstText.toString().toDouble() + secondText.toString().toDouble()
-                "-" -> if (firstText.toString().toDouble() > secondText.toString().toDouble()) {
-                    answer = firstText.toString().toDouble() - secondText.toString().toDouble()
-                }
-                "x" -> answer = firstText.toString().toDouble() * secondText.toString().toDouble()
-                "/" -> answer = firstText.toString().toDouble()
-            }
-            ans.text = answer.toString()
 
-        }
-    }
+//    fun Activity.hideKey(){
+//        val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        im.hideSoftInputFromWindow(findViewById(android.R.id.content).get, 0)
+//    }
 
     fun hidekey(){
-
+        val v: View = if (currentFocus == null) View(this) else currentFocus
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 }

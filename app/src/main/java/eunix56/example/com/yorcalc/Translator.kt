@@ -2,6 +2,15 @@ package eunix56.example.com.yorcalc
 
 object Translator{
 
+    fun translateoperator(o: String): String{
+        return when (o){
+            "+" -> "pelu"
+            "-" -> "o din"
+            "*" -> "o na"
+            "/" -> "o la"
+            else -> "o sofo"
+        }
+    }
     fun translate1to1000000(no: Int): String{
         return when (no){
             in 1..9 -> translate1to9(no)
@@ -57,9 +66,11 @@ object Translator{
         return when (number){
             10 -> "ẹẹ́wà"
             in 11..19 -> translate11to19(number, translate1to9(number - 10), sT20, translate1to9(20-number))
+            20 -> sT20
             in 21..24 -> translate1to9(getLastNum2D(number)) + "lel$sT20"
             25 -> "eed$sT30"
             in 26..29 -> translate1to9(10- getLastNum2D(number)) + "dinl$sT30"
+            30 -> sT30
             in 31..34 -> translate1to9(getLastNum2D(number)) + "lel$sT30"
             in 35..39 -> translate1to9(10-getLastNum2D(number)) + "dinl$sT40"
             in 41..44 -> translate1to9(getLastNum2D(number)) + "lel$sT40"
@@ -71,7 +82,7 @@ object Translator{
             in 71..74 -> translate1to9(getLastNum2D(number)) + "lel$sT70"
             in 75..79 -> translate1to9(10-getLastNum2D(number)) + "dinl$sT80"
             in 81..84 -> translate1to9(getLastNum2D(number)) + "lel$sT80"
-            in 85..89 -> translate1to9(getLastNum2D(number)) + "dinl$sT90"
+            in 85..89 -> translate1to9(10-getLastNum2D(number)) + "dinl$sT90"
             in 91..94 -> translate1to9(getLastNum2D(number)) + "lel$sT90"
             in 95..99 -> translate1to9(10-getLastNum2D(number)) + "dinl$sT100"
             40,60,80,100 -> translate20s(number)
@@ -94,17 +105,17 @@ object Translator{
 
     private fun translate101to199(number: Int): String{
         return when(number){
-            in 101..109 -> getLastNum3D(number, "Ọgọrùn", "àádọ́fà")
+            in 101..109 -> getLastNum3D(number, "ọgọrùn", "àádọ́fà")
             110,130,150,170 -> translateoddtens(number)
             120, 140,160,180 -> translate20s(number)
-            in 111..119 -> getLastNum3D(number, "àádọ́fà", "Ọgọfa")
-            in 121..129 -> getLastNum3D(number, "Ọgọfa", "àádóje")
-            in 131..139 -> getLastNum3D(number, "àádóje", "Ogoje")
-            in 141..149 -> getLastNum3D(number, "Ogoje", "àádọ́jọ")
-            in 151..159 -> getLastNum3D(number, "àádọ́jọ", "Ọgọjọ")
-            in 161..169 -> getLastNum3D(number, "Ọgọjọ", "àádọ́sán")
-            in 171..179 -> getLastNum3D(number, "àádọ́sán", "Ọgọsan")
-            in 181..189 -> getLastNum3D(number, "Ọgọsan", translatetens(190))
+            in 111..119 -> getLastNum3D(number, "àádọ́fà", "ọgọfa")
+            in 121..129 -> getLastNum3D(number, "ọgọfa", "àádóje")
+            in 131..139 -> getLastNum3D(number, "àádóje", "ọgọje")
+            in 141..149 -> getLastNum3D(number, "ọgọje", "àádọ́jọ")
+            in 151..159 -> getLastNum3D(number, "àádọ́jọ", "ọgọjọ")
+            in 161..169 -> getLastNum3D(number, "ọgọjọ", "àádọ́sán")
+            in 171..179 -> getLastNum3D(number, "àádọ́sán", "ọgọsan")
+            in 181..189 -> getLastNum3D(number, "ọgọsan", translatetens(190))
             in 191..199 -> getLastNum3D(number, translatetens(190), translatetens(200))
             else -> "invalid number"
         }
@@ -116,10 +127,10 @@ object Translator{
             10 -> "ẹẹ́wà"
             20 -> "ogún"
             30 -> "ọgbọ̀n"
-            190 -> "Mẹwadinigba"
-            200 -> "Igba"
-            300 -> "Ọdunrun"
-            1000 -> "Egberun"
+            190 -> "mẹwadinigba"
+            200 -> "igba"
+            300 -> "ọdunrun"
+            1000 -> "ẹgbẹrun"
             20000 -> "ọkẹ́ kán"
             else -> "invalid number"
         }
@@ -127,19 +138,19 @@ object Translator{
 
     private fun translate200to299(number: Int, prefix: String): String{
         return when (number){
-            in 201..209 -> translate1to9(number) + prefix
+            in 201..209 -> translate1to9(number-200) + prefix
             210 -> translatetens(10)+"lel"+ prefix
             in 211..219 -> getLastNum3D(number, translatetens(10)+ prefix, translateEven200tens(20, "ugba"))
-            220,240,260,280 -> translateEven200tens(number-200, "ugba")
-            in 221..229 -> getLastNum3D(number, translateEven200tens(20, "ugba"), translatetens(30)+"wo$prefix")
+            220,240,260,280 -> translateEven200tens(number-200, "lugba")
+            in 221..229 -> getLastNum3D(number, translateEven200tens(20, "lugba"), translatetens(30)+"wo$prefix")
             230 -> translatetens(30)+"wo$prefix"
             in 231..239 -> getLastNum3D(number, translatetens(30)+"wo$prefix", translateEven200tens(40, "lugba"))
-            in 241..249 -> getLastNum3D(number, translateEven200tens(40, "ugba"), translateoddtens(50)+prefix)
+            in 241..249 -> getLastNum3D(number, translateEven200tens(40, "lugba"), translateoddtens(50)+prefix)
             in 251..259 -> getLastNum3D(number, translateoddtens(50)+prefix, translateEven200tens(60, "ugba"))
-            in 261..269 -> getLastNum3D(number, translateEven200tens(60, "ugba"), translateoddtens(70)+ prefix )
+            in 261..269 -> getLastNum3D(number, translateEven200tens(60, "lugba"), translateoddtens(70)+ prefix )
             in 271..279 -> getLastNum3D(number, translateoddtens(70)+ prefix, translateEven200tens(80, "ugba") )
-            in 281..289 -> getLastNum3D(number, translateEven200tens(80, "ugba"), translateoddtens(90)+ prefix)
-            in 291..299 -> getLastNum3D(number, translateoddtens(90)+ prefix, "Ọdunrun")
+            in 281..289 -> getLastNum3D(number, translateEven200tens(80, "lugba"), translateoddtens(90)+ prefix)
+            in 291..299 -> getLastNum3D(number, translateoddtens(90)+ prefix, "lọdunrun")
             250,270,290 -> translateoddtens(number-200)+ prefix
             else -> "invalid number"
         }
@@ -147,19 +158,19 @@ object Translator{
 
     private fun translate301to999(number:Int): String{
         return when (number){
-            in 301..399 -> trySomething(number, "Ọdunrun", "Irinwo")
-            400 -> "Irinwo"
-            in 401..499 -> trySomething(number, "Irinwo", "Ẹdẹgbẹta")
-            500 -> "Ẹdẹgbẹta"
-            in 501..599 -> trySomething(number, "Ẹdẹgbẹta", "Ẹgbẹta")
-            600 -> "Ẹgbẹta"
-            in 601..699 -> trySomething(number, "Ẹgbẹta", "Ẹdẹgbẹrin")
-            700 -> "Ẹdẹgbẹrin"
-            in 701..799 -> trySomething(number, "Ẹdẹgbẹrin", "Ẹgbẹrin")
-            800 -> "Ẹgbẹrin"
-            in 801..899 -> trySomething(number, "Ẹgbẹrin", "Ẹdẹgbẹrun")
-            900 -> "Ẹdẹgbẹrun"
-            in 901..999 -> trySomething(number, "Ẹdẹgbẹrun", "Ẹgbẹrun")
+            in 301..399 -> trySomething(number, "ọdunrun", "irinwo")
+            400 -> "irinwo"
+            in 401..499 -> trySomething(number, "irinwo", "ẹdẹgbẹta")
+            500 -> "ẹdẹgbẹta"
+            in 501..599 -> trySomething(number, "ẹdẹgbẹta", "ẹgbẹta")
+            600 -> "ẹgbẹta"
+            in 601..699 -> trySomething(number, "ẹgbẹta", "ẹdẹgbẹrin")
+            700 -> "ẹdẹgbẹrin"
+            in 701..799 -> trySomething(number, "ẹdẹgbẹrin", "ẹgbẹrin")
+            800 -> "ẹgbẹrin"
+            in 801..899 -> trySomething(number, "ẹgbẹrin", "ẹdẹgbẹrun")
+            900 -> "ẹdẹgbẹrun"
+            in 901..999 -> trySomething(number, "ẹdẹgbẹrun", "ẹgbẹrun")
             else -> "invalid number"
         }
     }
@@ -248,22 +259,22 @@ object Translator{
         return when(no){
             4000,6000,8000,10000,12000,14000,16000,18000 -> eventhousands(no)
             5000,7000,9000,11000,13000,15000,17000,19000 -> oddthousands(no)
-            in 4001..4999 -> eventhousands(4000) + translate10004D(no)
-            in 5001..5999 -> oddthousands(5000) + translate10004D(no)
-            in 6001..6999 -> eventhousands(6000) + translate10004D(no)
-            in 7001..7999 -> oddthousands(7000) + translate10004D(no)
-            in 8001..8999 -> eventhousands(8000) + translate10004D(no)
-            in 9001..9999 -> oddthousands(8000) + translate10004D(no)
-            in 10001..10999 -> eventhousands(10000) + translate100005D(no)
-            in 11001..11999 -> oddthousands(11000) + translate100005D(no)
-            in 12001..12999 -> eventhousands(12000) + translate100005D(no)
-            in 13001..13999 -> oddthousands(13000) + translate100005D(no)
-            in 14001..14999 -> eventhousands(14000) + translate100005D(no)
-            in 15001..15999 -> oddthousands(15000) + translate100005D(no)
-            in 16001..16999 -> eventhousands(16000) + translate100005D(no)
-            in 17001..17999 -> oddthousands(17000) + translate100005D(no)
-            in 18001..18999 -> eventhousands(18000) + translate100005D(no)
-            in 19001..19999 -> oddthousands(19000) + translate100005D(no)
+            in 4001..4999 -> eventhousands(4000) + "le"+translate10004D(no)
+            in 5001..5999 -> oddthousands(5000) + "le"+translate10004D(no)
+            in 6001..6999 -> eventhousands(6000) + "le"+translate10004D(no)
+            in 7001..7999 -> oddthousands(7000) + "le"+translate10004D(no)
+            in 8001..8999 -> eventhousands(8000) + "le"+translate10004D(no)
+            in 9001..9999 -> oddthousands(8000) + "le"+translate10004D(no)
+            in 10001..10999 -> eventhousands(10000) + "le"+translate100005D(no)
+            in 11001..11999 -> oddthousands(11000) + "le"+translate100005D(no)
+            in 12001..12999 -> eventhousands(12000) + "le"+translate100005D(no)
+            in 13001..13999 -> oddthousands(13000) + "le"+translate100005D(no)
+            in 14001..14999 -> eventhousands(14000) + "le"+translate100005D(no)
+            in 15001..15999 -> oddthousands(15000) + "le"+translate100005D(no)
+            in 16001..16999 -> eventhousands(16000) + "le"+translate100005D(no)
+            in 17001..17999 -> oddthousands(17000) + "le"+translate100005D(no)
+            in 18001..18999 -> eventhousands(18000) + "le"+translate100005D(no)
+            in 19001..19999 -> oddthousands(19000) + "le"+translate100005D(no)
             else -> "invalid number"
         }
     }
@@ -360,7 +371,7 @@ object Translator{
         return when {
             no<10 -> translate1to9(no)
             no == 10 -> translatetens(10)
-            else -> translate11to19(no, translate1to9(no), translatetens(20), translate1to9(20-no))
+            else -> translate11to19(no, translate1to9(no-10), translatetens(20), translate1to9(20-no))
         }
     }
 
@@ -378,10 +389,10 @@ object Translator{
         val suffix = (no+1000)/2000
         val sT = translate1to9(suffix)
         return when(suffix){
-            5 -> "Ẹgbarundinẹgbẹ̀rún"
-            2, 7 -> "Ẹdẹgba"+ sT.removePrefix("eé")
+            5 -> "ẹgbarundinẹgbẹ̀rún"
+            2, 7 -> "ẹdẹgba"+ sT.removePrefix("eé")
             10 -> "ọkẹ́kándinẹgbẹ̀rún"
-            else -> "Ẹdẹgba"+sT.removePrefix("ẹẹ")
+            else -> "ẹdẹgba"+sT.removePrefix("ẹẹ")
         }
     }
 
@@ -404,16 +415,16 @@ object Translator{
         val array = no.toString().map { it.toString().toInt() }.toIntArray()
         return if (array[2] == 0 && array[3] == 0 && array[4] == 0) translate1to9(array[5])
         else if (array[2] == 0 && array[3] == 0 && array[4] != 0) translate10to99(("${array[4]}${array[5]}").toInt())
-        else if (array[2] == 0 && array[3] != 0 && array[4] != 0) translate100to999(("${array[3]}${array[4]}${array[5]}").toInt())
+        else if (array[2] == 0 && array[3] != 0) translate100to999(("${array[3]}${array[4]}${array[5]}").toInt())
         else translate1000to9999(("${array[2]}${array[3]}${array[4]}${array[5]}").toInt())
     }
 
     private fun translate6D(no: Int): String{
         val array = no.toString().map { it.toString().toInt() }.toIntArray()
-        return if (array[1] == 0 &&array[2] == 0 && array[3] == 0 && array[4] == 0) translate1to9(array[5])
-        else if (array[1] == 0 &&array[2] == 0 && array[3] == 0 && array[4] != 0) translate10to99(("${array[4]}${array[5]}").toInt())
-        else if (array[1] == 0 &&array[2] == 0 && array[3] != 0 && array[4] != 0) translate100to999(("${array[3]}${array[4]}${array[5]}").toInt())
-        else if (array[1] == 0 &&array[2] != 0 && array[3] != 0 && array[4] != 0) translate1000to9999(("${array[2]}${array[3]}${array[4]}${array[5]}").toInt())
+        return if (array[1] == 0 && array[2] == 0 && array[3] == 0 && array[4] == 0) translate1to9(array[5])
+        else if (array[1] == 0 && array[2] == 0 && array[3] == 0 && array[4] != 0) translate10to99(("${array[4]}${array[5]}").toInt())
+        else if (array[1] == 0 && array[2] == 0 && array[3] != 0) translate100to999(("${array[3]}${array[4]}${array[5]}").toInt())
+        else if (array[1] == 0 && array[2] != 0) translate1000to9999(("${array[2]}${array[3]}${array[4]}${array[5]}").toInt())
         else translate10000to99999(("${array[1]}${array[2]}${array[3]}${array[4]}${array[5]}").toInt())
     }
 
@@ -443,22 +454,22 @@ object Translator{
         val suffix = no/200
         val sT = translate1to19(suffix)
         return when (suffix) {
-            7 -> "Ẹgbẹ"+ sT.removePrefix("eé")
-            6,8,9 -> "Ẹgbẹ"+sT.removePrefix("ẹẹ")
-            10 -> "Ẹgbà" + sT.removePrefix("ẹẹ")
-            else -> "Ẹgb$sT"
+            7 -> "ẹgbẹ"+ sT.removePrefix("eé")
+            6,8,9 -> "ẹgbẹ"+sT.removePrefix("ẹẹ")
+            10 -> "ẹgbà" + sT.removePrefix("ẹẹ")
+            else -> "ẹgb$sT"
         }
     }
     private fun translateodd1000(no: Int): String{
         val suffix = (no+100)/200
         val sT = translate1to19(suffix)
         return when (suffix) {
-            6 -> "Egberunleọgọrun"
-            7 -> "Ẹdẹgbe" + sT.removePrefix("eé")
-            10 -> "Ẹgbadinọgọrun"
-            11 -> "Ẹgbàwáleọgọrun"
-            20 -> "Ẹgbajidin-ọgọrun"
-            else -> "Ẹdẹgb$sT"
+            6 -> "ẹgberunleọgọrun"
+            7 -> "ẹdẹgbe" + sT.removePrefix("eé")
+            10 -> "ẹgbadinọgọrun"
+            11 -> "ẹgbàwáleọgọrun"
+            20 -> "ẹgbajidin-ọgọrun"
+            else -> "ẹdẹgb$sT"
         }
     }
 
@@ -480,9 +491,9 @@ object Translator{
         val suffix = no/20
         return when (suffix) {
             1 -> translatetens(20)+"le"+prefix
-            2 -> "Ojule$prefix"
-            3 -> "Otale$prefix"
-            4 -> "Orinle$prefix"
+            2 -> "ojule$prefix"
+            3 -> "otale$prefix"
+            4 -> "orinle$prefix"
             else -> "Invalid number"
         }
     }
@@ -500,14 +511,14 @@ object Translator{
     private fun translate10004D(no: Int): String{
         val array = no.toString().map { it.toString().toInt() }.toIntArray()
         return if (array[1] == 0 && array[2] == 0) translate1to9(array[3])
-        else if (array[1] == 0 && array[2] != 0) translate10to99(("${array[1]}${array[2]}").toInt())
+        else if (array[1] == 0 && array[2] != 0) translate10to99(("${array[2]}${array[3]}").toInt())
         else translate100to999(("${array[1]}${array[2]}${array[3]}").toInt())
     }
 
     private fun translate1000D(no: Int): String{
         val array = no.toString().map { it.toString().toInt() }.toIntArray()
         return if (array[2] == 0) translate1to9(array[3])
-        else  translate10to99(("${array[2]}${array[3]}").toInt())
+        else translate10to99(("${array[2]}${array[3]}").toInt())
     }
 //
 //
