@@ -407,7 +407,7 @@ object Translator{
         val array = no.toString().map { it.toString().toInt() }.toIntArray()
         return if (array[1] == 0 && array[2] == 0 && array[3] == 0) translate1to9(array[4])
         else if (array[1] == 0 && array[2] == 0 && array[3] != 0) translate10to99(("${array[3]}${array[4]}").toInt())
-        else if (array[1] == 0 && array[2] != 0 && array[3] != 0) translate100to999(("${array[2]}${array[3]}${array[4]}").toInt())
+        else if (array[1] == 0 && array[2] != 0) translate100to999(("${array[2]}${array[3]}${array[4]}").toInt())
         else translate1000to9999(("${array[1]}${array[2]}${array[3]}${array[4]}").toInt())
     }
 
